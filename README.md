@@ -24,7 +24,7 @@ Eigen ≥ 3.3.7
 ```bash
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
-git clone https://github.com/qfwang23/.git
+git clone https://github.com/qfwang23/VTD-LO.git
 cd ~/catkin_ws
 catkin_make
 source devel/setup.bash
@@ -33,25 +33,16 @@ roslauch vtd_lo kitti.launch
 
 ## Acknowledgements
 ```bash
-@article{vizzo2023ral,
-  author    = {Vizzo, Ignacio and Guadagnino, Tiziano and Mersch, Benedikt and Wiesmann, Louis and Behley, Jens and Stachniss, Cyrill},
-  title     = {{KISS-ICP: In Defense of Point-to-Point ICP -- Simple, Accurate, and Robust Registration If Done the Right Way}},
-  journal   = {IEEE Robotics and Automation Letters (RA-L)},
-  pages     = {1029--1036},
-  doi       = {10.1109/LRA.2023.3236571},
-  volume    = {8},
-  number    = {2},
-  year      = {2023}
-}
+@INPROCEEDINGS{9636655,
+  author={Wang, Han and Wang, Chen and Chen, Chun-Lin and Xie, Lihua},
+  booktitle={2021 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)}, 
+  title={F-LOAM : Fast LiDAR Odometry and Mapping}, 
+  year={2021},
+  volume={},
+  number={},
+  pages={4390-4396},
+  keywords={Location awareness;Simultaneous localization and mapping;Laser radar;Remotely guided vehicles;Pose estimation;Feature extraction;Distortion},
+  doi={10.1109/IROS51168.2021.9636655}}
 
-@article{chen2022direct,
-  author={Kenny Chen and Brett T. Lopez and Ali-akbar Agha-mohammadi and Ankur Mehta},
-  journal={IEEE Robotics and Automation Letters}, 
-  title={Direct LiDAR Odometry: Fast Localization With Dense Point Clouds}, 
-  year={2022},
-  volume={7},
-  number={2},
-  pages={2000-2007},
-  doi={10.1109/LRA.2022.3142739}
-}
+
 ```
