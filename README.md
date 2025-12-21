@@ -4,14 +4,15 @@
 
  
 ## Introduction
-	LiDAR odometry is a key enabler for autonomous navigation and localization in mobile robots and has been widely deployed in autonomous driving and robotic systems. However, existing local-map-based geometric matching methods are vulnerable in dynamic scenes. Erroneous correspondences induced by moving objects and transient structural changes can bias pose updates, while the long-term fusion of dynamic points gradually contaminates the local map, leading to unstable estimation and degraded accuracy. To address these issues, this paper proposes VTD-LO (Voxel-Temporal Dynamic LiDAR Odometry), a LiDAR odometry method with voxel-temporal dynamic filtering. VTD-LO constructs geometric residual constraints using edge and planar features against a local map, and maintains online, cross-frame accumulated voxel statistics. The temporal stability of each voxel is characterized by the cross-frame dispersion (accumulated variance) of points observed in that voxel. Based on this stability measure, VTD-LO introduces a two-stage dynamic suppression mechanism: (i) during constraint construction, a gating rule evaluates the temporal instability of neighboring voxels and rejects correspondences with high dynamic risk; (ii) during map update, map points inside unstable voxels are removed to prevent long-term accumulation of dynamic regions. In addition, to mitigate optimization bias caused by heterogeneous constraint reliability, VTD-LO adopts an adaptive residual weighting scheme that combines voxel staticness, map-point age, and range-dependent factors with bounded scaling, and integrates it with the Huber robust kernel to form a weighted robust pose optimization objective for improved convergence stability. Extensive experiments on the public KITTI and M2DGR datasets demonstrate that VTD-LO achieves more stable trajectory estimation and lower localization error than competing methods in dynamic environments.
-## Demo
-![示例图片](https://github.com/qfwang23/ALO/blob/6aa048cc49058d78d20e694bbfcd3c419e20cf9a/demo.gif)
+
+LiDAR odometry is a key enabler for autonomous navigation and localization in mobile robots and has been widely deployed in autonomous driving and robotic systems. However, existing local-map-based geometric matching methods are vulnerable in dynamic scenes. Erroneous correspondences induced by moving objects and transient structural changes can bias pose updates, while the long-term fusion of dynamic points gradually contaminates the local map, leading to unstable estimation and degraded accuracy. To address these issues, this paper proposes VTD-LO (Voxel-Temporal Dynamic LiDAR Odometry), a LiDAR odometry method with voxel-temporal dynamic filtering. VTD-LO constructs geometric residual constraints using edge and planar features against a local map, and maintains online, cross-frame accumulated voxel statistics. The temporal stability of each voxel is characterized by the cross-frame dispersion (accumulated variance) of points observed in that voxel. Based on this stability measure, VTD-LO introduces a two-stage dynamic suppression mechanism: (i) during constraint construction, a gating rule evaluates the temporal instability of neighboring voxels and rejects correspondences with high dynamic risk; (ii) during map update, map points inside unstable voxels are removed to prevent long-term accumulation of dynamic regions. In addition, to mitigate optimization bias caused by heterogeneous constraint reliability, VTD-LO adopts an adaptive residual weighting scheme that combines voxel staticness, map-point age, and range-dependent factors with bounded scaling, and integrates it with the Huber robust kernel to form a weighted robust pose optimization objective for improved convergence stability. Extensive experiments on the public KITTI and M2DGR datasets demonstrate that VTD-LO achieves more stable trajectory estimation and lower localization error than competing methods in dynamic environments.
+
+
 
 ## Dependence
 ```bash
-Ubuntu 18.04 or 20.04
-ROS Melodic（roscpp、std_msgs、sensor_msgs、geometry_msgs、pcl_ros）
+Ubuntu 20.04
+ROS Noetic（roscpp、std_msgs、sensor_msgs、geometry_msgs、pcl_ros）
 C++ 14
 CMake ≥ 3.16
 PCL≥ 1.10.0
@@ -23,19 +24,12 @@ Eigen ≥ 3.3.7
 ```bash
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
-git clone https://github.com/qfwang23/LO.git
+git clone https://github.com/qfwang23/.git
 cd ~/catkin_ws
 catkin_make
 source devel/setup.bash
-roslauch LO lo.launch
-rosbag play [topic]
+roslauch vtd_lo kitti.launch
 ```
-
-## Rusult
-
-![示例图片](https://github.com/qfwang23/LO/blob/3eaeaeebb11cf3b1210e6e47297447f7a408c7fe/LO_png/tab1.png)
-
-![示例图片](https://github.com/qfwang23/LO/blob/3eaeaeebb11cf3b1210e6e47297447f7a408c7fe/LO_png/traij.png)
 
 ## Acknowledgements
 ```bash
