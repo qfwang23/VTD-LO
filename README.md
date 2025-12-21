@@ -14,6 +14,8 @@ LiDAR odometry is a key enabler for autonomous navigation and localization in mo
 ![示例图片](https://github.com/qfwang23/VTD-LO/blob/b2e4c1c7b05a6c0a3eace1c3a422055b13de9038/result/02traij.pdf)
 
 
+![示例图片](https://github.com/qfwang23/VTD-LO/blob/ae25518b2265ab601e0a199072f0803ae173a5d5/result/08map.png)
+
 
 
 
