@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Sequence number 00~10 -->
+    <arg name="seq" default="08" />
+
+    <!-- Ablation switches -->
+    <arg name="use_adaptive_weight" default="true" />
+    <arg name="use_dynamic_filter"  default="true" />
+
+    <!-- TUM trajectory file path (passed in by script) -->
+    <arg name="tum_path" default="/home/wqf/VTD-LO/result/aaa.txt" />
+
+    <node pkg="rosbag" type="play" name="rosbag_play"
+          args="--clock --delay=2 $(env HOME)/DATASET/KITTI/$(arg seq).bag"/>
+
+
+    <!-- For Velodyne VLP-16 
+    <param name="scan_line" value="16" />
+    -->
+
+    <!-- For Velodyne HDL-32  -->
+    <!-- <param name="scan_line" value="32" /> -->
+   
+
+    <!-- For Velodyne HDL-64 -->
+    <param name="scan_line" value="64" />
+
+
+    <!--- Sim Time -->
+    <param name="/use_sim_time" value="true" />
+    <param name="scan_period" value="0.1" /> 
+    <param name="vertical_angle" type="double" value="2.0" />
+    <param name="max_dis" type="double" value="90.0" />
+    <param name="min_dis" type="double" value="3.0" />
+    <param name="topic" type="string" value="/velodyne_points" />
+
+    <param name="map_resolution" type="double" value="0.4"/>
+
+       <!-- Parameters related to dynamic point filtering (default values are consistent with source code) -->
+    <param name="voxel_var_thresh_corner" type="double" value="0.01"/>
+    <param name="voxel_var_thresh_surf"   type="double" value="0.01"/>
+    <param name="voxel_min_count_corner"  type="int"    value="5"/>
+    <param name="voxel_min_count_surf"    type="int"    value="5"/>
+
+    <!--- -->
+
+   <!-- Odom estimation node: pass 3 switches/path from args -->
+    <node pkg="vtd_lo" type="vtd_lo_odom_estimation_node"
+          name="vtd_lo_odom_estimation_node" output="screen">
+        <param name="use_adaptive_weight" type="bool" value="$(arg use_adaptive_weight)" />
+        <param name="use_dynamic_filter"  type="bool" value="$(arg use_dynamic_filter)" />
+        <param name="tum_path"           type="string" value="$(arg tum_path)" />
+    </node>
+
+    <node pkg="vtd_lo" type="vtd_lo_laser_processing_node"
+      name="vtd_lo_laser_processing_node" output="screen">
+    </node>
+
+    <node pkg="vtd_lo" type="vtd_lo_laser_mapping_node" name="vtd_lo_laser_mapping_node" output="screen"/>
+    
+    <node pkg="tf" type="static_transform_publisher" name="word2map_tf"  args="0 0 0 0 0 0 /world /map 10" />
+    <arg name="rviz" default="true" />
+    <group if="$(arg rviz)">
+        <node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz" args="-d $(find vtd_lo)/rviz/vtd_lo.rviz" />
+    </group>
+
+    
+  	<node pkg="hector_trajectory_server" type="hector_trajectory_server" name="trajectory_server_loam" ns="gt" >
+        <param name="/target_frame_name" value="world" />
+        <param name="/source_frame_name" value="velodyne" />
+        <param name="/trajectory_update_rate" value="10.0" />
+        <param name="/trajectory_publish_rate" value="10.0" />
+    </node>
+    <node pkg="hector_trajectory_server" type="hector_trajectory_server" name="trajectory_server_loam" ns="base_link" >
+        <param name="/target_frame_name" value="world" />
+        <param name="/source_frame_name" value="base_link" />
+        <param name="/trajectory_update_rate" value="10.0" />
+        <param name="/trajectory_publish_rate" value="10.0" />
+    </node>
+
+</launch>

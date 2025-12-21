@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<package>
+  <name>vtd_lo</name>
+  <version>0.0.0</version>
+
+  <description>
+    This work is the official implementation of "vtd_lo: Voxel-Temporal Dynamic LiDAR Odometry".
+  </description>
+
+  <maintainer email="qfwang23@gmail.com">Qifeng  wang</maintainer>
+
+  <license>wqf</license>
+  <url>https:</url>
+  <author email="qfwang23@gmail.com">Qifeng  wang</author>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>nav_msgs</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>  
+  <build_depend>rosbag</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>tf</build_depend>
+  <build_depend>eigen_conversions</build_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>nav_msgs</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>rospy</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>rosbag</run_depend>
+  <run_depend>tf</run_depend>
+  <run_depend>eigen_conversions</run_depend>
+
+  <build_depend>pcl_ros</build_depend>
+  <build_depend>pcl_conversions</build_depend>
+  <build_depend>jsk_recognition_msgs</build_depend>
+
+  <run_depend>pcl_ros</run_depend>
+  <run_depend>pcl_conversions</run_depend>
+  <run_depend>jsk_recognition_msgs</run_depend>
+
+
+
+
+  <export>
+  </export>
+</package>

@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!--================ General parameter section ================-->
+
+    <!-- Rosbag path to play: change to your other dataset bag -->
+    <arg name="bag_file" default="$(env HOME)/DATASET/M2DGR/hall_01.bag" />
+
+    <!-- Ablation switches: both enabled by default here -->
+    <arg name="use_adaptive_weight" default="true" />
+    <arg name="use_dynamic_filter"  default="true" />
+
+    <!-- TUM trajectory file path: a generic naming here, you can modify as needed -->
+    <arg name="tum_path" default="$(env HOME)/MyPFilter(last)/result/M2DGR_result/aaa.txt" />
+
+    <!--================ Rosbag playback ================-->
+
+    <!-- No longer using KITTI seq; use bag_file directly -->
+    <node pkg="rosbag" type="play" name="rosbag_play"
+          args="--clock --delay=2 $(arg bag_file)"/>
+
+    <!--================ Odometry/Mapping parameters (keep consistent with original) ================-->
+
+    <!-- For Velodyne VLP-16 
+    <param name="scan_line" value="16" />
+    -->
+
+    <!-- For Velodyne HDL-32   -->
+    <param name="scan_line" value="32" />
+   
+
+    <!-- For Velodyne HDL-64 (default: 64 lines) -->
+    <!-- <param name="scan_line" value="64" /> -->
+
+    <!-- Sim Time -->
+    <param name="/use_sim_time" value="true" />
+    <param name="scan_period" value="0.1" /> 
+    <param name="vertical_angle" type="double" value="2.0" />
+    <param name="max_dis" type="double" value="90.0" />
+    <param name="min_dis" type="double" value="3.0" />
+    <param name="topic" type="string" value="/velodyne_points" />
+
+    <param name="map_resolution" type="double" value="0.4"/>
+
+    <!-- Parameters related to dynamic point filtering -->
+    <param name="voxel_var_thresh_corner" type="double" value="0.01"/>
+    <param name="voxel_var_thresh_surf"   type="double" value="0.01"/>
+    <param name="voxel_min_count_corner"  type="int"    value="5"/>
+    <param name="voxel_min_count_surf"    type="int"    value="5"/>
+
+    <!--================ Node definitions ================-->
+
+    <!-- Odom estimation node: pass 2 switches + trajectory path from args -->
+    <node pkg="vtd_lo" type="vtd_lo_odom_estimation_node"
+          name="vtd_lo_odom_estimation_node" output="screen">
+        <!-- Two innovations: both true by default -->
+        <param name="use_adaptive_weight" type="bool" value="$(arg use_adaptive_weight)" />
+        <param name="use_dynamic_filter"  type="bool" value="$(arg use_dynamic_filter)" />
+        <!-- Trajectory save path -->
+        <param name="tum_path"            type="string" value="$(arg tum_path)" />
+    </node>
+
+    <node pkg="vtd_lo" type="vtd_lo_laser_processing_node"
+          name="vtd_lo_laser_processing_node" output="screen">
+    </node>
+
+    <node pkg="vtd_lo" type="vtd_lo_laser_mapping_node"
+          name="vtd_lo_laser_mapping_node" output="screen"/>
+
+    <!-- Coordinate frames -->
+    <node pkg="tf" type="static_transform_publisher"
+          name="word2map_tf"
+          args="0 0 0 0 0 0 /world /map 10" />
+
+    <!-- RViz -->
+    <arg name="rviz" default="true" />
+    <group if="$(arg rviz)">
+        <node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz"
+              args="-d $(find vtd_lo)/rviz/vtd_lo.rviz" />
+    </group>
+
+    <!-- Hector trajectory visualization (keep unchanged) -->
+    <node pkg="hector_trajectory_server" type="hector_trajectory_server"
+          name="trajectory_server_loam" ns="gt">
+        <param name="/target_frame_name" value="world" />
+        <param name="/source_frame_name" value="velodyne" />
+        <param name="/trajectory_update_rate" value="10.0" />
+        <param name="/trajectory_publish_rate" value="10.0" />
+    </node>
+
+    <node pkg="hector_trajectory_server" type="hector_trajectory_server"
+          name="trajectory_server_loam" ns="base_link">
+        <param name="/target_frame_name" value="world" />
+        <param name="/source_frame_name" value="base_link" />
+        <param name="/trajectory_update_rate" value="10.0" />
+        <param name="/trajectory_publish_rate" value="10.0" />
+    </node>
+
+</launch>
