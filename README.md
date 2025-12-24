@@ -2,6 +2,8 @@
 
 # VTD-LO: Voxel-Temporal Dynamic Filtering LiDAR Odometry with Two-Stage Dynamic Suppression and Adaptive Residual Weighting
 
+[Paper Details / 论文详情](https://qfwang23.github.io/VTD-LO/)
+
 <p align="center">
   <img src="https://github.com/qfwang23/VTD-LO/blob/feb5ae156f1869c22bf65f3fa8e5bede164cca43/result/02map.png?raw=1" width="45%" />
   <img src="https://github.com/qfwang23/VTD-LO/blob/ac9b0cd4dfe308cf0a35bb80ec29678d6c88f410/result/08map.png?raw=1" width="45%" />
