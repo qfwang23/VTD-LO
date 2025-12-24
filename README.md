@@ -9,6 +9,8 @@ LiDAR odometry is a key enabler for autonomous navigation and localization in mo
 
 ## Result
 
+
+
 ![示例图片](https://github.com/qfwang23/VTD-LO/blob/a63b95719870e0c7074aaa2081af4e2649f99c9f/result/image.png)
 
 <p align="center">
@@ -21,27 +23,6 @@ LiDAR odometry is a key enabler for autonomous navigation and localization in mo
 
 
 
-## Dependence
-```bash
-Ubuntu 20.04
-ROS Noetic（roscpp、std_msgs、sensor_msgs、geometry_msgs、pcl_ros）
-C++ 14
-CMake ≥ 3.16
-PCL≥ 1.10.0
-Eigen ≥ 3.3.7
-```
-
-## Install
- 
-```bash
-mkdir -p ~/catkin_ws/src
-cd ~/catkin_ws/src
-git clone https://github.com/qfwang23/VTD-LO.git
-cd ~/catkin_ws
-catkin_make
-source devel/setup.bash
-roslauch vtd_lo kitti.launch
-```
 
 ## Acknowledgements
 ```bash
