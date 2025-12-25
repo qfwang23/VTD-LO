@@ -11,7 +11,7 @@
     <arg name="use_dynamic_filter"  default="true" />
 
     <!-- TUM trajectory file path: a generic naming here, you can modify as needed -->
-    <arg name="tum_path" default="$(env HOME)/MyPFilter(last)/result/M2DGR_result/aaa.txt" />
+    <arg name="tum_path" default="$(env HOME)/VTD-LO/result/M2DGR_result/aaa.txt" />
 
     <!--================ Rosbag playback ================-->
 
