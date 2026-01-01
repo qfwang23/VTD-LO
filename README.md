@@ -1,4 +1,4 @@
-# The manuscript has been submitted to IEEE Transactions on Geoscience and Remote Sensing
+# The manuscript has been submitted to IEEE Transactions on Intelligent Transportation Systems
 
 # VTD-LO: Voxel-Temporal Dynamic Filtering LiDAR Odometry with Two-Stage Dynamic Suppression and Adaptive Residual Weighting
 
