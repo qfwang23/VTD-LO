@@ -17,7 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   eigen_conversions
   pcl_ros
   pcl_conversions
-  jsk_recognition_msgs      # ★ 为了 PolygonArray
+  jsk_recognition_msgs      # PolygonArray messages
 )
 
 

@@ -46,7 +46,7 @@ source "$HOME/vtd_ws/devel/setup.bash"
 
 The launch files expect ROS 1 bags containing `sensor_msgs/PointCloud2` scans on `/velodyne_points`. Point clouds are read as PCL `PointXYZI`: provide `x`, `y`, `z`, and `intensity` fields, consistent timestamps, and the original scan ordering.
 
-The source assigns scan lines using elevation angles. The supplied KITTI launch selects its 64-line branch; M2DGR selects its 32-line branch. Both use a nominal 0.1 s scan period. Dataset files are not included in this repository.
+The source assigns scan lines using elevation angles. The supplied KITTI launch selects its 64-line branch; M2DGR selects its 32-line branch. Both use a nominal 0.1 s scan period. Obtain the recordings from the [KITTI](https://www.cvlibs.net/datasets/kitti/eval_odometry.php) and [M2DGR](https://github.com/SJTU-ViSYS/M2DGR) dataset pages.
 
 Inspect a bag before starting:
 
@@ -65,9 +65,9 @@ roslaunch vtd_lo kitti.launch \
   tum_path:="$HOME/vtd_results/kitti08.txt"
 ```
 
-This launch starts `rosbag play` with simulated time, the three processing nodes, RViz, and trajectory visualization. A separate playback command is unnecessary. The bag location follows `~/DATASET/KITTI/<seq>.bag`; this launch does not accept a `bag_file` argument.
+This single launch starts bag playback with simulated time, the three processing nodes, RViz, and trajectory visualization. The `seq` argument selects the bag at `~/DATASET/KITTI/<seq>.bag`.
 
-For a run without RViz, append `rviz:=false`. The trajectory visualization nodes remain enabled.
+Append `rviz:=false` to disable the RViz window while keeping trajectory visualization topics available.
 
 ## M2DGR
 
@@ -104,7 +104,7 @@ roslaunch vtd_lo kitti.launch \
   tum_path:="$HOME/vtd_results/kitti08.txt"
 ```
 
-Parameters such as `topic`, `scan_line`, `map_resolution`, and the voxel thresholds are configured with `<param>` entries in the launch files. They are not command-line launch arguments. For a different input topic or sensor setup, make a copy of the appropriate launch file and edit those entries before starting the nodes. See [Method and parameters](method.md#launch-configuration) for their meanings and supplied values.
+Configure `topic`, `scan_line`, `map_resolution`, and the voxel thresholds through the `<param>` entries in the launch files. For a different input topic or sensor setup, copy the appropriate launch file and edit those entries before starting the nodes. Use the arguments in the table for command-line overrides. See [Method and parameters](method.md#launch-configuration) for parameter meanings and supplied values.
 
 ## ROS interfaces
 
@@ -121,11 +121,11 @@ Parameters such as `topic`, `scan_line`, `map_resolution`, and the voxel thresho
 
 The odometry node broadcasts `map → base_link`. The launch files also publish an identity `world → map` transform. `/edge_local_map` and `/surf_local_map` are the relevant outputs for viewing the temporally filtered registration map. `/map` is produced separately by the visualization mapping node.
 
-The default RViz configuration uses `map` as its fixed frame. Its optional image and ground-truth trajectory displays require matching camera topics and dataset transforms; these are not inputs to VTD-LO pose estimation.
+The default RViz configuration uses `map` as its fixed frame. Matching camera topics and dataset transforms enable its optional image and ground-truth trajectory displays. The pose estimator receives the extracted LiDAR features.
 
 ## Trajectory export
 
-Always pass a writable `tum_path` and create its parent directory first. Each row contains:
+Set `tum_path` to a writable file and create its parent directory before launch. Each row contains:
 
 ```text
 timestamp tx ty tz qx qy qz qw
@@ -133,15 +133,14 @@ timestamp tx ty tz qx qy qz qw
 
 Timestamps follow the incoming scan messages. A run opens the output file for writing, so use a distinct filename to preserve an earlier trajectory. After bag playback completes, allow queued scans to finish processing and stop the launch with `Ctrl+C`.
 
-## Practical checks
+## Run checklist
 
-| Symptom | Check |
+| Item | Verification |
 | --- | --- |
-| `vtd_lo` package cannot be found | Source `~/vtd_ws/devel/setup.bash` and run `rospack find vtd_lo`. |
-| Ceres or JSK package is missing | Install `libceres-dev` and `ros-noetic-jsk-recognition-msgs`, then rebuild. |
-| Hector trajectory node cannot be found | Install `ros-noetic-hector-trajectory-server`. It is used by both launch files. |
-| No scans arrive | Check the bag topic, `/clock`, bag path, and `/topic` parameter. |
-| Trajectory file is absent | Check `tum_path`, parent-directory existence, and write permissions before launch. |
-| Build exceeds available memory | Reduce parallel jobs, for example `catkin_make -j2`. |
+| Workspace | Source `~/vtd_ws/devel/setup.bash`; `rospack find vtd_lo` should return the package path. |
+| Dependencies | Install the listed Ceres, JSK, and Hector packages before building and launching. |
+| Playback | Verify the bag path, input topic, `/topic` parameter, and simulated clock. |
+| Trajectory output | Create the output directory and set a writable `tum_path` for each run. |
+| Build jobs | Choose a parallel job count suited to available memory, for example `catkin_make -j2` or `-j4`. |
 
-The logged `avg FPS` measures the odometry update function. Feature extraction, ROS transport, and visualization have additional processing costs.
+The logged `avg FPS` summarizes timed calls to `updatePointsToMap` in the odometry node. This timing scope covers the scan-to-map odometry update.

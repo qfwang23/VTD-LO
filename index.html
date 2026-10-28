@@ -47,11 +47,22 @@
     .footer-content { display: flex; justify-content: space-between; gap: 25px; color: var(--muted); font-size: 12px; }
     .footer-content p { margin: 0; max-width: 700px; }
     .footer-content a { text-decoration: underline; text-underline-offset: 3px; }
+    .research-section { margin: 10px 0 38px; }
+    .research-section > h2 { margin-bottom: 18px; }
+    .scope-table { width: 100%; border-collapse: collapse; margin-bottom: 42px; }
+    .scope-table th, .scope-table td { text-align: left; padding: 14px 18px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    .scope-table th { color: var(--accent); font-size: 13px; }
+    .scope-table td { color: var(--muted); font-size: 14px; }
+    .scope-table td:first-child { color: var(--text); width: 28%; }
+    .paper-figure { margin: 20px 0 28px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--panel); }
+    .paper-figure h3 { padding: 20px 24px; margin: 0; }
+    .paper-figure img { display: block; width: 100%; height: auto; background: white; }
+    .paper-figure figcaption { padding: 17px 24px 20px; color: var(--muted); font-size: 13px; }
     @media (max-width: 700px) {
       .shell { width: calc(100% - 32px); }
       nav { min-height: 72px; gap: 15px; }
       .brand { font-size: 20px; }
-      .navlinks { gap: 12px; font-size: 11px; }
+      .navlinks { gap: 10px; font-size: 11px; flex-wrap: wrap; justify-content: flex-end; }
       .hero { padding: 40px 0 30px; }
       h1 { letter-spacing: -1.2px; }
       .lead { font-size: 16px; }
@@ -75,7 +86,8 @@
     <nav class="shell" aria-label="Main navigation">
       <a class="brand" href="https://github.com/qfwang23/VTD-LO">VTD-LO</a>
       <div class="navlinks">
-        <a href="#local-map">Demos</a>
+        <a href="#map-comparisons">Maps</a>
+        <a href="#map-sequence">Demos</a>
         <a href="https://github.com/qfwang23/VTD-LO/blob/main/docs/method.md">Method</a>
         <a href="https://github.com/qfwang23/VTD-LO">Back to GitHub ↗</a>
       </div>
@@ -87,12 +99,55 @@
       <h1 id="page-title">VTD-LO in motion.</h1>
       <p class="lead">Explore the geometry used for registration and the trajectories estimated by VTD-LO on KITTI and UrbanLoco. Voxel-temporal statistics and adaptive residual weighting guide this LiDAR-only odometry system.</p>
       <div class="tags" aria-label="Method features">
-        <span>4 demonstrations</span><span>7 recorded trajectories</span><span>2 datasets</span>
+        <span>5 demonstrations</span><span>2 map comparisons</span><span>36 sensitivity runs</span>
+      </div>
+    </section>
+    <section class="research-section" aria-labelledby="evaluation-title">
+      <h2 id="evaluation-title">Evaluation coverage</h2>
+      <table class="scope-table">
+        <thead><tr><th>Study</th><th>Coverage</th></tr></thead>
+        <tbody>
+          <tr><td>Benchmarks</td><td>KITTI 00–10, M2DGR ground-robot recordings, and five UrbanLoco vehicle recordings.</td></tr>
+          <tr><td>Parameter sensitivity</td><td>36 full-sequence sensitivity runs, including joint parameter settings.</td></tr>
+          <tr><td>Residual weights</td><td>Seven fusion choices on KITTI 01, 05, and 08.</td></tr>
+          <tr><td>Motion transitions</td><td>A controlled synthetic 180-scan move–stop–restart scene with four module configurations.</td></tr>
+          <tr><td>Congested traffic</td><td>Nine controlled synthetic conditions and three noise seeds per condition.</td></tr>
+          <tr><td>Initialization</td><td>26 translation and rotation perturbation tests.</td></tr>
+          <tr><td>Native maps</td><td>Eight method–recording runs and 64 snapshots across two UrbanLoco recordings.</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="research-section" id="map-comparisons" aria-labelledby="comparison-title">
+      <h2 id="comparison-title">Local-map comparisons</h2>
+      <figure class="paper-figure">
+        <h3>HK-Data20190426-2</h3>
+        <a href="assets/figures/urbanloco-hk426-map-comparison.png"><img src="assets/figures/urbanloco-hk426-map-comparison.png" alt="HK426 source scan and local-map comparison across four methods" width="3740" height="1096"></a>
+        <figcaption>Input frame 320 at 32.03 s. The source scan and four methods share spatial crops, a 0.10 m display grid, and height colors. Red marks the detail region; green marks background regions.</figcaption>
+      </figure>
+      <figure class="paper-figure">
+        <h3>20190331HH</h3>
+        <a href="assets/figures/urbanloco-hh-map-comparison.png"><img src="assets/figures/urbanloco-hh-map-comparison.png" alt="HH source scan and local-map comparison across four methods" width="3740" height="1530"></a>
+        <figcaption>Input frame 820 at 82.07 s. Each lower panel shows the same detail region. LeGO-LOAM uses its native pre-insertion surface and outlier history at the acquisition offset shown in the figures.</figcaption>
+      </figure>
+    </section>
+    <section class="demo" id="map-sequence" aria-labelledby="map-sequence-title">
+      <div class="demo-heading">
+        <span class="number">01</span>
+        <div><h2 id="map-sequence-title">Native-map comparison over time</h2><p>UrbanLoco · Two recordings · Sixteen snapshot instants</p></div>
+        <span class="duration">32 seconds</span>
+      </div>
+      <video autoplay muted loop controls playsinline preload="auto" poster="assets/demos/urbanloco-map-comparison.png" width="1920" height="1080" aria-label="UrbanLoco raw scans and four methods across sixteen snapshot instants">
+        <source src="assets/demos/urbanloco-map-comparison.mp4" type="video/mp4">
+        <a href="assets/demos/urbanloco-map-comparison.mp4">Download this demonstration.</a>
+      </video>
+      <div class="demo-footer">
+        <p>Eight saved instants from each recording show raw scans and native local maps from F-LOAM, P-Filter, LeGO-LOAM, and VTD-LO. Shared crops and display settings preserve the spatial comparison; frame indices and elapsed times identify the observations.</p>
+        <a class="text-link" href="assets/demos/urbanloco-map-comparison.mp4" download>Download MP4 ↓</a>
       </div>
     </section>
     <section class="demo" id="local-map" aria-labelledby="local-map-title">
       <div class="demo-heading">
-        <span class="number">01</span>
+        <span class="number">02</span>
         <div>
           <h2 id="local-map-title">Temporal local-map replay</h2>
           <p>KITTI 08 · Three recorded time windows · 1× playback</p>
@@ -110,7 +165,7 @@
     </section>
     <section class="demo" id="map-detail" aria-labelledby="map-detail-title">
       <div class="demo-heading">
-        <span class="number">02</span>
+        <span class="number">03</span>
         <div>
           <h2 id="map-detail-title">Local-map geometry</h2>
           <p>KITTI 08 · Three-dimensional feature structure · Viewpoint orbit</p>
@@ -122,13 +177,13 @@
         <a href="assets/demos/kitti-map-detail.mp4">Download this demonstration.</a>
       </video>
       <div class="demo-footer">
-        <p>Three recorded local-map snapshots are shown from smoothly changing viewpoints. Each point set remains fixed during its eight-second view; the viewing camera moves around it. A 10 m scale and route locator show the extent and location of each view.</p>
+        <p>Eight-second viewpoint orbits present the geometry of three local-map snapshots. A 10 m scale and route locator show the extent and location of each view.</p>
         <a class="text-link" href="assets/demos/kitti-map-detail.mp4" download>Download MP4 ↓</a>
       </div>
     </section>
     <section class="demo" id="urbanloco" aria-labelledby="urbanloco-title">
       <div class="demo-heading">
-        <span class="number">03</span>
+        <span class="number">04</span>
         <div>
           <h2 id="urbanloco-title">Five recorded urban runs</h2>
           <p>UrbanLoco · One shared sensor configuration · 40× playback</p>
@@ -146,7 +201,7 @@
     </section>
     <section class="demo" id="trajectories" aria-labelledby="trajectories-title">
       <div class="demo-heading">
-        <span class="number">04</span>
+        <span class="number">05</span>
         <div>
           <h2 id="trajectories-title">Complete trajectory replay</h2>
           <p>KITTI 02 &amp; 08 · Estimated poses · 20× playback</p>
@@ -170,7 +225,7 @@
       <div class="method-grid">
         <article>
           <h3>Track voxel stability</h3>
-          <p>Separate corner and surface voxel states summarize repeated map observations through online mean and variance updates. Stability follows observed geometry rather than semantic object labels.</p>
+          <p>Separate corner and surface voxel states summarize repeated map observations through online mean and variance updates. Stability follows the spatial consistency of repeated observations.</p>
         </article>
         <article>
           <h3>Maintain useful constraints</h3>

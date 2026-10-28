@@ -4,16 +4,16 @@ set -euo pipefail
 #############################
 # Config (modify if needed)
 #############################
-LAUNCH_PKG="vtd_lo"          # 你的launch所在包名：例如 vtd_lo
-LAUNCH_FILE="kitti.launch"   # 你的launch文件名：kitti.launch
+LAUNCH_PKG="vtd_lo"          # ROS package
+LAUNCH_FILE="kitti.launch"   # Launch file
 
-DATASET_DIR="$HOME/DATASET/KITTI"   # 00.bag ~ 10.bag 所在目录（仅用于检查）
-OUT_DIR="$HOME/VTD-LO/result/vtd_lo_logs_kitti"   # 11个TXT输出目录
+DATASET_DIR="$HOME/DATASET/KITTI"   # KITTI bags 00.bag through 10.bag
+OUT_DIR="$HOME/VTD-LO/result/vtd_lo_logs_kitti"   # Per-sequence log directory
 
-# 可选：给每次运行指定TUM轨迹保存目录（如果你的launch/节点需要）
+# TUM trajectory output directory
 TUM_ROOT="$HOME/VTD-LO/result/tum"
 
-# 可选：消融开关（保持launch默认true也行）
+# Module switches
 USE_ADAPTIVE_WEIGHT="true"
 USE_DYNAMIC_FILTER="true"
 
