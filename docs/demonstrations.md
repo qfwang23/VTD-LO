@@ -2,31 +2,22 @@
 
 [Project home](../README.md) · [Method and parameters](method.md) · [Build and run](usage.md)
 
-The demonstrations present VTD-LO pose estimates, temporal map updates, spatial map structure, and native-map comparisons across methods. The README presents looping animations; the video gallery provides the corresponding 1280 × 720 MP4 recordings.
+The three demonstrations present recorded VTD-LO local maps and estimated trajectories. The README presents looping animations; the video gallery provides the corresponding 1280 × 720 MP4 recordings.
 
 ## Recording guide
 
 | Demonstration | Recorded content | Presentation |
 | --- | --- | --- |
-| Native-map comparison over time | Raw scans and four native maps at eight instants in each of two UrbanLoco recordings | Sixteen saved instants shown in sequence with actual frame indices and elapsed times |
 | Temporal local-map replay | KITTI 08 edge and surface local maps from three short time windows | 1× recorded time; approximately 2.5 map snapshots per second |
 | Local-map geometry | Three KITTI 08 local-map snapshots | Eight seconds of changing viewpoint per fixed point set |
 | Five recorded urban runs | Five UrbanLoco pose trajectories under one shared sensor configuration | 40× recorded time, with a brief hold between runs |
-| Complete trajectory replay | Saved KITTI 02 and 08 pose trajectories | Both trajectories replayed at 20× recorded time |
 
-Map views use cyan for edge features and amber for surface features. The colors identify feature types. A route locator marks the position of each displayed local map along the saved trajectory.
-
-## Native-map comparisons
-
-The two figures show HK-Data20190426-2 at input frame 320 (32.03 s) and 20190331HH at input frame 820 (82.07 s). Each compares the source scan with F-LOAM, P-Filter, LeGO-LOAM, and VTD-LO. Context and detail panels use the same spatial crops, 0.10 m display grid, and height range of −2 to 3 m. Red marks the detail region; green marks background regions.
-
-The comparison video follows eight saved instants from each recording. Each map is expressed in the input LiDAR coordinate convention using the pose paired with its native publication time. LeGO-LOAM contributes its pre-insertion surface and outlier history at the acquisition offset shown in the panels, approximately +0.100 s. The snapshot sequence follows these recorded observations in their original order.
+Map views use slate blue for edge features and sienna for surface features. The colors identify feature types. A route locator marks the position of each displayed local map along the saved trajectory.
 
 ## KITTI recordings
 
 | Sequence | Saved poses | Recording duration |
 | --- | ---: | ---: |
-| 02 | 4,661 | 483.276 s |
 | 08 | 4,071 | 422.940 s |
 
 The temporal map replay uses these three KITTI 08 windows, measured from the start of the saved trajectory:
