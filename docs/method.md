@@ -45,7 +45,7 @@ For a retained correspondence, VTD-LO combines three terms:
 The combined weight is
 
 $$
-\omega=\operatorname{clip}(\omega_{\mathrm{static}}\,\omega_{\mathrm{age}}\,\omega_{\mathrm{range}},0.1,2.0).
+\omega=\mathrm{clip}(\omega_{\mathrm{static}}\,\omega_{\mathrm{age}}\,\omega_{\mathrm{range}},0.1,2.0).
 $$
 
 It scales the robust loss of each scalar geometric residual:
